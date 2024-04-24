@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
+import org.hl7.fhir.r4.model.AllergyIntolerance;
 import org.hl7.fhir.r4.model.Attachment;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.CodeableConcept;
@@ -24,6 +25,7 @@ import org.springframework.util.CollectionUtils;
 
 import com.karkinos.clinical.artifacts.vo.ClinicalData;
 import com.karkinos.clinical.artifacts.vo.Diagnostic;
+import com.karkinos.clinical.artifacts.vo.SimpleAllergy;
 
 import ca.uhn.fhir.parser.IParser;
 import lombok.SneakyThrows;
@@ -187,16 +189,16 @@ public class OPConsultationHelper {
 
 	@SneakyThrows
 	protected void createAllergiesSection(Bundle bundle, Composition composition, Patient patient, IParser parser) {
-//		Composition.SectionComponent section = composition.addSection();
-//		section.setTitle("Allergy Section");
-//		section.setCode(FHIRUtils.getAllergySectionType());
-//		AllergyIntolerance foodAllergy = SimpleAllergy.getFoodAllergy(parser, composition.getSubject(),
-//				composition.getAuthorFirstRep());
-//		AllergyIntolerance medicationAllergy = SimpleAllergy.getMedicationAllergy(parser, composition.getSubject(),
-//				composition.getAuthorFirstRep());
-//		FHIRUtils.addToBundleEntry(bundle, foodAllergy, true);
-//		FHIRUtils.addToBundleEntry(bundle, medicationAllergy, true);
-//		section.getEntry().add(FHIRUtils.getReferenceToResource(foodAllergy));
-//		section.getEntry().add(FHIRUtils.getReferenceToResource(medicationAllergy));
+		Composition.SectionComponent section = composition.addSection();
+		section.setTitle("Allergy Section");
+		section.setCode(FHIRUtils.getAllergySectionType());
+		AllergyIntolerance foodAllergy = SimpleAllergy.getFoodAllergy(parser, composition.getSubject(),
+				composition.getAuthorFirstRep());
+		AllergyIntolerance medicationAllergy = SimpleAllergy.getMedicationAllergy(parser, composition.getSubject(),
+				composition.getAuthorFirstRep());
+		FHIRUtils.addToBundleEntry(bundle, foodAllergy, true);
+		FHIRUtils.addToBundleEntry(bundle, medicationAllergy, true);
+		section.getEntry().add(FHIRUtils.getReferenceToResource(foodAllergy));
+		section.getEntry().add(FHIRUtils.getReferenceToResource(medicationAllergy));
 	}
 }
